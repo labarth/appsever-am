@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
 import { AuthDto } from './dto/auth.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -62,6 +63,23 @@ export class AuthService {
       throw new UnauthorizedException('this user is not authorize');
     } catch (e) {
       throw new UnauthorizedException('this user is not authorize');
+    }
+  }
+
+  async signUp(dto: SignUpDto) {
+    try {
+      const isUserRegister = await this.userService.findUserByEmail(dto.email);
+
+      if (isUserRegister) {
+        throw new HttpException(
+          'this email has been used',
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      await this.userService.create(dto);
+    } catch (e) {
+      throw new UnauthorizedException('something went wrong');
     }
   }
 }
