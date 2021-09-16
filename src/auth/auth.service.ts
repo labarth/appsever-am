@@ -67,19 +67,18 @@ export class AuthService {
   }
 
   async signUp(dto: SignUpDto) {
-    try {
-      const isUserRegister = await this.userService.findUserByEmail(dto.email);
+    const hasUser = await this.userService.findUserByEmail(dto.email);
 
-      if (isUserRegister) {
-        throw new HttpException(
-          'this email has been used',
-          HttpStatus.CONFLICT,
-        );
-      }
-
-      await this.userService.create(dto);
-    } catch (e) {
-      throw new UnauthorizedException('something went wrong');
+    if (hasUser) {
+      throw new HttpException(
+        {
+          message: 'user with this email already exists',
+          type: 'email_is_busy',
+        },
+        HttpStatus.CONFLICT,
+      );
     }
+
+    await this.userService.create(dto);
   }
 }
