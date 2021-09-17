@@ -28,20 +28,6 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  @Post()
-  async create(@Body() dto: CreateUserDto) {
-    const user = await this.userService.findUserByEmail(dto.email);
-
-    if (user) {
-      throw new HttpException(
-        'user with this email already exists',
-        HttpStatus.CONFLICT,
-      );
-    }
-
-    return this.userService.create(dto);
-  }
-
   @Delete(':id')
   async delete(@Param('id') id: ObjectId) {
     const deletedUser = await this.userService.delete(id);
