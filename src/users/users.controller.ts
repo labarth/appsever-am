@@ -1,17 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Param,
-  Body,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Param, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ObjectId } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('api/users')
@@ -30,13 +19,7 @@ export class UsersController {
 
   @Delete(':id')
   async delete(@Param('id') id: ObjectId) {
-    const deletedUser = await this.userService.delete(id);
-
-    if (deletedUser) {
-      return deletedUser;
-    }
-
-    return new HttpException('user not found', HttpStatus.NOT_FOUND);
+    return this.userService.delete(id);
   }
 
   @Patch(':id')

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -47,6 +47,10 @@ export class UsersService {
 
   async delete(id): Promise<User> {
     const user = await this.userModel.findByIdAndDelete(id);
+
+    if (!user) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
 
     return user;
   }

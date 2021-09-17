@@ -19,55 +19,51 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
-    try {
-      const user = await this.userService.findUserByEmail(dto.email);
-      const compare = await bcrypt.compare(dto.password, user.password);
+    const user = await this.userService.findUserByEmail(dto.email);
+    const compare = await bcrypt.compare(dto.password, user.password);
 
-      if (user && compare) {
-        const userData = {
-          id: user._id,
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          email: user.email,
-        };
-
-        const token = this.jwtService.sign(userData);
-
-        return {
-          ...userData,
-          token,
-        };
-      }
-
+    if (!compare) {
       throw new UnauthorizedException('incorrect password or email');
-    } catch (e) {
-      throw new UnauthorizedException('incorrect password or email');
+    }
+
+    if (user && compare) {
+      const userData = {
+        id: user._id,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email,
+      };
+
+      const token = this.jwtService.sign(userData);
+
+      return {
+        ...userData,
+        token,
+      };
     }
   }
 
   async isAuth(dto: AuthDto) {
-    try {
-      const { email } = await this.jwtService.verify(dto.token);
+    const { email } = await this.jwtService.verify(dto.token);
 
-      const user = await this.userService.findUserByEmail(email);
-
-      if (user) {
-        const userData = {
-          id: user._id,
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          email: user.email,
-        };
-
-        return {
-          ...userData,
-          token: dto.token,
-        };
-      }
-
+    if (!email) {
       throw new UnauthorizedException('this user is not authorize');
-    } catch (e) {
-      throw new UnauthorizedException('this user is not authorize');
+    }
+
+    const user = await this.userService.findUserByEmail(email);
+
+    if (user) {
+      const userData = {
+        id: user._id,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email,
+      };
+
+      return {
+        ...userData,
+        token: dto.token,
+      };
     }
   }
 
