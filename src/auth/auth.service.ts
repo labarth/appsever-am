@@ -74,6 +74,7 @@ export class AuthService {
         {
           message: 'user with this email already exists',
           type: 'email_is_busy',
+          code: HttpStatus.CONFLICT,
         },
         HttpStatus.CONFLICT,
       );
