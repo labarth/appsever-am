@@ -1734,6 +1734,11 @@ cjs-module-lexer@^1.0.0:
   resolved "https://pandadoc.jfrog.io/pandadoc/api/npm/npm/cjs-module-lexer/-/cjs-module-lexer-1.2.2.tgz#9f84ba3244a512f3a54e5277e8eef4c489864e40"
   integrity sha1-n4S6MkSlEvOlTlJ36O70xImGTkA=
 
+class-transformer@^0.4.0:
+  version "0.4.0"
+  resolved "https://pandadoc.jfrog.io/pandadoc/api/npm/npm/class-transformer/-/class-transformer-0.4.0.tgz#b52144117b423c516afb44cc1c76dbad31c2165b"
+  integrity sha1-tSFEEXtCPFFq+0TMHHbbrTHCFls=
+
 class-validator@^0.13.1:
   version "0.13.1"
   resolved "https://pandadoc.jfrog.io/pandadoc/api/npm/npm/class-validator/-/class-validator-0.13.1.tgz#381b2001ee6b9e05afd133671fbdf760da7dec67"
